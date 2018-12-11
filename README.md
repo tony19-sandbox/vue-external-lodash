@@ -1,29 +1,29 @@
-# vue-tmp-lodash
+> Demo for https://stackoverflow.com/questions/53664163/webpack-external-library-access-with-vue-web-components
 
-## Project setup
-```
-npm install
-```
+This project demonstrates using Lodash CDN from within a Vue library.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+*Notes:*
 
-### Compiles and minifies for production
-```
-npm run build
-```
+ * In `public/index.html`, import Lodash from CDN with:
 
-### Run your tests
-```
-npm run test
-```
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
 
-### Lints and fixes files
-```
-npm run lint
-```
+* When building (with `npm run build`), edit `dist/demo.html` to also include the `<script>` tag above.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* In the library component (`src/components/HelloWorld.vue`), the `_` global can be used **without importing `lodash`**.
+ 
+* To avoid lint errors, specify `_` as an [ESLint global](https://eslint.org/docs/user-guide/configuring#specifying-globals) (`/* global _ */`).
+
+* In [`vue.config.js`](https://cli.vuejs.org/config/#vue-config-js), configure Webpack to externalize `lodash`:
+
+      module.exports = {
+        configureWebpack: {
+          externals: {
+            lodash: {
+              commonjs: 'lodash',
+              amd: 'lodash',
+              root: '_' // indicates global variable
+            }
+          }
+        }
+      }
